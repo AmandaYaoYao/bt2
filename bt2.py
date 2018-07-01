@@ -81,7 +81,7 @@ class BluePlayer():
 	   obj = self.bus.get_object('org.bluez', player_path2)
 	   player_properties2 = obj.GetAll(PLAYER_IFACE, dbus_interface="org.freedesktop.DBus.Properties")
 	   print('below here is obj.status')
-	   if player_properties2["Status"] = 'playing':
+	   if player_properties2["Status"] == 'playing':
             print("they're both playing now")
             obj.Pause(dbus_interface=PLAYER_IFACE)
 	   print('END STATUS')
