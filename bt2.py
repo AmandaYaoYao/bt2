@@ -70,9 +70,12 @@ class BluePlayer():
         #When should we add signal receiver to player 2? 
         #should we turn player 1 to player 2 and V.V. ? 
         #maybe add a nice needs flipped variable to tell if stuff needs to get flipped or not
+        #NEED TO HANDLE ONly one connection
     def ifPlayer(self, lst):
-        player_path = lst[0]
-        player_path2 = lst[1]
+        if lst[0]:
+            player_path = lst[0]
+        if lst[1]:
+            player_path2 = lst[1]
 
         #Changed by getting rid of print(path2)
         #Now making a call to player2
