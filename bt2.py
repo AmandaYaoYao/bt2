@@ -72,10 +72,21 @@ class BluePlayer():
         #maybe add a nice needs flipped variable to tell if stuff needs to get flipped or not
         #NEED TO HANDLE ONly one connection
     def ifPlayer(self, lst):
+<<<<<<< HEAD
         if lst[0]:
             player_path = lst[0]
         if lst[1]:
             player_path2 = lst[1]
+=======
+        player_path = None
+	player_path2 = None
+	#The 0 length case seems handled 
+	if len(lst) ==  1: 
+           player_path = lst[0]
+        if len(lst) == 2:
+           player_path = lst[0]
+	   player_path2 = lst[1]
+>>>>>>> 4c3b845d6159f214336d956f01c37dfe109bd7db
 
         #Changed by getting rid of print(path2)
         #Now making a call to player2
@@ -97,8 +108,9 @@ class BluePlayer():
     #in playerhandler2 i set obj.connected, which probably should not happen realistically,
     #means that we do not need to set
     #gonna fuck round with these'r objects shortly and see what happens
-    def player2(path):
+    def player2(self, path):
            obj = self.bus.get_object('org.bluez', path)
+           obj.Pause(dbus_interface=PLAYER_IFACE)
            player_properties2 = obj.GetAll(PLAYER_IFACE, dbus_interface="org.freedesktop.DBus.Properties")
            if "Status" in player_properties2:
                 self.status2 = player_properties2["Status"]
@@ -109,7 +121,8 @@ class BluePlayer():
                 print(player_properties2["Status"])
                 self.needs_flipped = True
                 #does obj work here?
-           obj.bus.add_signal_receiver(self.playerHandler2,
+		#really not sure  bout line below -- look at iot for error
+           self.bus.add_signal_receiver(self.playerHandler2,
                     bus_name="org.bluez",
                     dbus_interface="org.freedesktop.DBus.Properties",
                     signal_name="PropertiesChanged",
@@ -130,7 +143,7 @@ class BluePlayer():
                 #indented this which was unexpected
                	self.player_list += [path]
         #this ifplayer call calls the function in 
-        self.ifPlayer(self.player_list)
+        	self.ifPlayer(self.player_list)
 		
 
     def getPlayer(self, path):
@@ -160,7 +173,7 @@ class BluePlayer():
             #when the track changes, check if we need to update player orders
             if "Track" in changed:
                 self.track = changed["Track"]
-                if needs_flipped == True:
+                if self.needs_flipped == True:
                     #NEED TO INTEGRATE THIS WITH FINDPLAYER WHICH HAS A FUCKED UP LIST ATM
                     self.player_list = [self.player_list[0], self.player_list[1]]
                     self.needs_flipped = False
