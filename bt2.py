@@ -61,8 +61,8 @@ class BluePlayer():
         manager = dbus.Interface(self.bus.get_object("org.bluez", "/"), "org.freedesktop.DBus.ObjectManager")
         objects = manager.GetManagedObjects()
 
-       #playerlist head as player apth
-	player_list = []
+       #CHG___ NOT Indented originally ya silly < inline with def
+	    player_list = []
         player_path = None
         for path, interfaces in objects.iteritems():
             if PLAYER_IFACE in interfaces:
@@ -72,31 +72,41 @@ class BluePlayer():
 		#print(player_list)
 		#player_path = path 
 
-	player_path = player_list[0]
+        #CHG _ _ NEITHER OF THESE WERE INDENTED< inline with def
+    	player_path = player_list[0]
 
-	player_path2 = player_list[1]
+	    player_path2 = player_list[1]
 
-	if player_path2:
-	   print(player_path2)
-	   obj = self.bus.get_object('org.bluez', player_path2)
-	   player_properties2 = obj.GetAll(PLAYER_IFACE, dbus_interface="org.freedesktop.DBus.Properties")
-	   print('below here is obj.status')
-	   if player_properties2["Status"] == 'playing':
-            print("they're both playing now")
-            obj.Pause(dbus_interface=PLAYER_IFACE)
-	   print('END STATUS')
 
+        #Pseudo -- If player_path2 then we know there's 2 players
+        #we should check current signal -> Is it playing? 
+        #we should replace it with paused if it is
+        #We should let the thing know that we have this guy waiting to play next
+        #We should look for signal that something has changed on player one (when next track happens)
+        #Then we should play the player 2 song again
+        #When should we add signal receiver to player 2? 
+        #should we turn player 1 to player 2 and V.V. ? 
+        # WHat if we return from find player and call this if then player thing? 
+    	if player_path2:
+    	   obj = self.bus.get_object('org.bluez', player_path2)
+    	   player_properties2 = obj.GetAll(PLAYER_IFACE, dbus_interface="org.freedesktop.DBus.Properties")
+    	   if player_properties2["Status"] == 'playing':
+                print("they're both playing now so we just paused one")
+                obj.Pause(dbus_interface=PLAYER_IFACE)
+    	   print('END STATUS')
+
+        #CHG _ _ THIS GUY WAS INDENTED While the pp2 wasn't seems not good 
         if player_path:
-            self.connected = True
-            self.getPlayer(player_path)
-            player_properties = self.player.GetAll(PLAYER_IFACE, dbus_interface="org.freedesktop.DBus.Properties")
-            if "Status" in player_properties:
-                self.status = player_properties["Status"]
-		print('below is the original status')
-		print(self.status)
-		print('END GOOD STATUS')
-            if "Track" in player_properties:
-                self.track = player_properties["Track"]
+                self.connected = True
+                self.getPlayer(player_path)
+                player_properties = self.player.GetAll(PLAYER_IFACE, dbus_interface="org.freedesktop.DBus.Properties")
+                if "Status" in player_properties:
+                    self.status = player_properties["Status"]
+    		print('below is the original status')
+    		print(self.status)
+    		print('END GOOD STATUS')
+                if "Track" in player_properties:
+                    self.track = player_properties["Track"]
 
     def getPlayer(self, path):
         """Get a media player from a dbus path, and the associated device"""
