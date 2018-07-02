@@ -66,30 +66,30 @@ class BluePlayer():
         # WHat if we return from find player and call this if then player thing? 
     def ifPlayer(lst):
 
-    player_path = lst[0]
-    player_path2 = lst[1]
+        player_path = lst[0]
+        player_path2 = lst[1]
 
-    if player_path2:
-       print(player_path2)
-       obj = self.bus.get_object('org.bluez', player_path2)
-       player_properties2 = obj.GetAll(PLAYER_IFACE, dbus_interface="org.freedesktop.DBus.Properties")
-       print('below here is obj.status')
-       if player_properties2["Status"] == 'playing':
-            print("they're both playing now")
-            obj.Pause(dbus_interface=PLAYER_IFACE)
-       print('END STATUS')
+        if player_path2:
+           print(player_path2)
+           obj = self.bus.get_object('org.bluez', player_path2)
+           player_properties2 = obj.GetAll(PLAYER_IFACE, dbus_interface="org.freedesktop.DBus.Properties")
+           print('below here is obj.status')
+           if player_properties2["Status"] == 'playing':
+                print("they're both playing now")
+                obj.Pause(dbus_interface=PLAYER_IFACE)
+           print('END STATUS')
 
-        if player_path:
-                self.connected = True
-                self.getPlayer(player_path)
-                player_properties = self.player.GetAll(PLAYER_IFACE, dbus_interface="org.freedesktop.DBus.Properties")
-                if "Status" in player_properties:
-                    self.status = player_properties["Status"]
-            print('below is the original status')
-            print(self.status)
-            print('END GOOD STATUS')
-                if "Track" in player_properties:
-                    self.track = player_properties["Track"]
+            if player_path:
+                    self.connected = True
+                    self.getPlayer(player_path)
+                    player_properties = self.player.GetAll(PLAYER_IFACE, dbus_interface="org.freedesktop.DBus.Properties")
+                    if "Status" in player_properties:
+                        self.status = player_properties["Status"]
+                print('below is the original status')
+                print(self.status)
+                print('END GOOD STATUS')
+                    if "Track" in player_properties:
+                        self.track = player_properties["Track"]
 
     def findPlayer(self):
         """Find any current media players and associated device"""
