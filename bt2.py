@@ -79,17 +79,17 @@ class BluePlayer():
                 obj.Pause(dbus_interface=PLAYER_IFACE)
            print('END STATUS')
 
-            if player_path:
-                    self.connected = True
-                    self.getPlayer(player_path)
-                    player_properties = self.player.GetAll(PLAYER_IFACE, dbus_interface="org.freedesktop.DBus.Properties")
-                    if "Status" in player_properties:
-                        self.status = player_properties["Status"]
-                print('below is the original status')
-                print(self.status)
-                print('END GOOD STATUS')
-                    if "Track" in player_properties:
-                        self.track = player_properties["Track"]
+        if player_path:
+                self.connected = True
+                self.getPlayer(player_path)
+                player_properties = self.player.GetAll(PLAYER_IFACE, dbus_interface="org.freedesktop.DBus.Properties")
+                if "Status" in player_properties:
+                    self.status = player_properties["Status"]
+            print('below is the original status')
+            print(self.status)
+            print('END GOOD STATUS')
+                if "Track" in player_properties:
+                    self.track = player_properties["Track"]
 
     def findPlayer(self):
         """Find any current media players and associated device"""
