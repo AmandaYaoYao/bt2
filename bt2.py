@@ -62,7 +62,7 @@ class BluePlayer():
         objects = manager.GetManagedObjects()
 
        #CHG___ NOT Indented originally ya silly < inline with def
-	    player_list = []
+	player_list = []
         player_path = None
         for path, interfaces in objects.iteritems():
             if PLAYER_IFACE in interfaces:
