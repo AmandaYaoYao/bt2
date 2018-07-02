@@ -5,6 +5,7 @@
 # sudo apt-get install -y python-gobject
 
 import time
+import logging
 import signal
 import dbus
 import dbus.service
@@ -55,6 +56,7 @@ class BluePlayer():
         """Stop the gobject Mainloop()"""
         if (self.mainloop):
             self.mainloop.quit();
+    
     #Pseudo -- If player_path2 then we know there's 2 players
     #we should check current signal -> Is it playing? 
     #we should replace it with paused if it is
@@ -64,8 +66,7 @@ class BluePlayer():
         #When should we add signal receiver to player 2? 
         #should we turn player 1 to player 2 and V.V. ? 
         # WHat if we return from find player and call this if then player thing? 
-    def ifPlayer(lst):
-
+    def ifPlayer(self, lst):
         player_path = lst[0]
         player_path2 = lst[1]
 
@@ -85,9 +86,9 @@ class BluePlayer():
                 player_properties = self.player.GetAll(PLAYER_IFACE, dbus_interface="org.freedesktop.DBus.Properties")
                 if "Status" in player_properties:
                     self.status = player_properties["Status"]
-            print('below is the original status')
-            print(self.status)
-            print('END GOOD STATUS')
+                print('below is the original status')
+                print(self.status)
+                print('END GOOD STATUS')
                 if "Track" in player_properties:
                     self.track = player_properties["Track"]
 
@@ -104,12 +105,10 @@ class BluePlayer():
 		#print(player_list)
 		#print(path)
            	player_list += [path]
-            break
+
         #this if player call calls the function in 
-        ifPlayer(player_list)
+        return ifPlayer(player_list)
 		
-   
-   
 
     def getPlayer(self, path):
         """Get a media player from a dbus path, and the associated device"""
@@ -171,6 +170,7 @@ if __name__ == "__main__":
     except KeyboardInterrupt as ex:
         print("\nBluePlayer cancelled by user")
     except Exception as ex:
-        print("How embarrassing. The following error occurred {}".format(ex))
+        logging.exception("message")
+	#print("How embarrassing. The following error occurred {}".format(ex))
     finally:
         if player: player.end()
