@@ -48,6 +48,15 @@ class BluePlayer():
                 signal_name="PropertiesChanged",
                 path_keyword="path")
 
+        #i think that it may be the case that both devices send signals through multiple 
+        #devices
+        self.bus.add_signal_receiver(self.playerHandler2,
+                    bus_name="org.bluez",
+                    dbus_interface="org.freedesktop.DBus.Properties",
+                    signal_name="PropertiesChanged",
+                    path_keyword="path")
+         
+
         self.findPlayer()
         self.updateDisplay()
 
@@ -72,12 +81,6 @@ class BluePlayer():
         #maybe add a nice needs flipped variable to tell if stuff needs to get flipped or not
         #NEED TO HANDLE ONly one connection
     def ifPlayer(self, lst):
-<<<<<<< HEAD
-        if lst[0]:
-            player_path = lst[0]
-        if lst[1]:
-            player_path2 = lst[1]
-=======
         player_path = None
 	player_path2 = None
 	#The 0 length case seems handled 
@@ -86,7 +89,6 @@ class BluePlayer():
         if len(lst) == 2:
            player_path = lst[0]
 	   player_path2 = lst[1]
->>>>>>> 4c3b845d6159f214336d956f01c37dfe109bd7db
 
         #Changed by getting rid of print(path2)
         #Now making a call to player2
@@ -105,15 +107,17 @@ class BluePlayer():
                 if "Track" in player_properties:
                     self.track = player_properties["Track"]
 
-    #in playerhandler2 i set obj.connected, which probably should not happen realistically,
-    #means that we do not need to set
+
     #gonna fuck round with these'r objects shortly and see what happens
+    #thought it was obj.Pause, but now do not
+    # Maybe we just keep overwriting this proxy obj for no reason. Maybe make self.player2 ? 
     def player2(self, path):
            obj = self.bus.get_object('org.bluez', path)
            obj.Pause(dbus_interface=PLAYER_IFACE)
            player_properties2 = obj.GetAll(PLAYER_IFACE, dbus_interface="org.freedesktop.DBus.Properties")
            if "Status" in player_properties2:
                 self.status2 = player_properties2["Status"]
+           #this if statement isn't workin still - lord knows why
            if player_properties2["Status"] == 'playing':     
                 print("Just Paused Player 2")
                 obj.Pause(dbus_interface=PLAYER_IFACE)
@@ -121,13 +125,10 @@ class BluePlayer():
                 print(player_properties2["Status"])
                 self.needs_flipped = True
                 #does obj work here?
-		#really not sure  bout line below -- look at iot for error
-           self.bus.add_signal_receiver(self.playerHandler2,
-                    bus_name="org.bluez",
-                    dbus_interface="org.freedesktop.DBus.Properties",
-                    signal_name="PropertiesChanged",
-                    path_keyword="path")
-         
+		   #really not sure  bout line below -- look at iot for error
+           ##SIGNAL HANDLERITSELF IS NOT EXECUTING I DONT THINK
+           #APPARENTLY signal receiver can only be called on bus objects
+           
     
     #if there's not 2 devices device connected though, what are we going to do? 
     #Should probably add a buttton for single player mode       
@@ -143,7 +144,9 @@ class BluePlayer():
                 #indented this which was unexpected
                	self.player_list += [path]
         #this ifplayer call calls the function in 
-        	self.ifPlayer(self.player_list)
+        #### CHG --- the indentation was over one before, maybe sending them independently for each item? 
+        #### I unindented here
+        self.ifPlayer(self.player_list)
 		
 
     def getPlayer(self, path):
