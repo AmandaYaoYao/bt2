@@ -78,7 +78,6 @@ class BluePlayer():
     def getPlayer(self, path):
         """Get a media player from a dbus path, and the associated device"""
         self.player = self.bus.get_object("org.bluez", path)
-        self.pause()
         device_path = self.player.Get("org.bluez.MediaPlayer1", "Device", dbus_interface="org.freedesktop.DBus.Properties")
         self.getDevice(device_path)
 
@@ -105,11 +104,15 @@ class BluePlayer():
         elif iface == "MediaPlayer1":
             if "Track" in changed:
                 self.pause()
-                self.track = changed["Track"]
-                self.updateDisplay()
-            if "Status" in changed:
-                self.pause()
+                #@TODO ome type of feedback here needed to get em to go 
+                # 
+                # end player if and when we need to 
+                player.end()
+                # self.track = changed["Track"]
+                # self.updateDisplay()
+            if "Status" in changed:                
                 self.status = (changed["Status"])
+
     def updateDisplay(self):
         if self.player:
             if "Artist" in self.track:
