@@ -27,6 +27,7 @@ class BluePlayer():
     state = None
     status = None
     track = []
+    addy = None
 
     def __init__(self):
         """Specify a signal handler, and find any connected media players"""
@@ -42,8 +43,10 @@ class BluePlayer():
                 signal_name="PropertiesChanged",
                 path_keyword="path")
 
-        self.findPlayer()
-        self.updateDisplay()
+        self.getPlayer(path)
+
+    def setAddy(self, path):
+        self.addy = add
 
     def start(self):
         """Start the BluePlayer by running the gobject Mainloop()"""
@@ -55,29 +58,9 @@ class BluePlayer():
         if (self.mainloop):
             self.mainloop.quit();
 
-    def findPlayer(self):
-        """Find any current media players and associated device"""
-        manager = dbus.Interface(self.bus.get_object("org.bluez", "/"), "org.freedesktop.DBus.ObjectManager")
-        objects = manager.GetManagedObjects()
-
-        player_path = None
-        for path, interfaces in objects.iteritems():
-            if PLAYER_IFACE in interfaces:
-                player_path = path
-                break
-
-        if player_path:
-            self.connected = True
-            self.getPlayer(player_path)
-            player_properties = self.player.GetAll(PLAYER_IFACE, dbus_interface="org.freedesktop.DBus.Properties")
-            if "Status" in player_properties:
-                self.status = player_properties["Status"]
-            if "Track" in player_properties:
-                self.track = player_properties["Track"]
-
     def getPlayer(self, path):
         """Get a media player from a dbus path, and the associated device"""
-        self.player = self.bus.get_object("org.bluez", path)
+        self.player = self.bus.get_object("org.bluez", self.addy)
         self.pause()
         device_path = self.player.Get("org.bluez.MediaPlayer1", "Device", dbus_interface="org.freedesktop.DBus.Properties")
         self.getDevice(device_path)
@@ -110,14 +93,6 @@ class BluePlayer():
             if "Status" in changed:
                 self.pause()
                 self.status = (changed["Status"])
-    def updateDisplay(self):
-        if self.player:
-            if "Artist" in self.track:
-                print(self.track["Artist"])
-            if "Title" in self.track:
-                print(self.track["Title"])
-        else:
-            print("Waiting for media player")
 
     def next(self):
         self.player.Next(dbus_interface=PLAYER_IFACE)
@@ -131,11 +106,14 @@ class BluePlayer():
     def pause(self):
         self.player.Pause(dbus_interface=PLAYER_IFACE)
 
-if __name__ == "__main__":
-    player = None
+player = None
+
+def run(address):
+    
 
     try:
         player = BluePlayer()
+        player.setAddy(address)
         player.start()
     except KeyboardInterrupt as ex:
         print("\nBluePlayer cancelled by user")
@@ -143,3 +121,7 @@ if __name__ == "__main__":
         print("How embarrassing. The following error occurred {}".format(ex))
     finally:
         if player: player.end()
+
+def end():
+    player.end()
+
