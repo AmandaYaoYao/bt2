@@ -64,13 +64,13 @@ class BluePlayer():
                 lst += [path]
 
         player_path = None
-    player_path2 = None
+        player_path2 = None
     #The 0 length case seems handled 
-    if len(lst) ==  1: 
+        if len(lst) ==  1: 
            player_path = lst[0]
         if len(lst) == 2:
            player_path = lst[0]
-       player_path2 = lst[1]
+           player_path2 = lst[1]
 
       
  
@@ -78,13 +78,15 @@ class BluePlayer():
         #Now making a call to player2
         if player_path2:
            obj = self.bus.get_object('org.bluez', player_path2)
+	   print "if player2 engaged"           
            print help(obj)
            
         if player_path:
                 self.connected = True
                 self.getPlayer(player_path)
                 player_properties = self.player.GetAll(PLAYER_IFACE, dbus_interface="org.freedesktop.DBus.Properties")
-                if "Status" in player_properties:
+                print player_properties
+		if "Status" in player_properties:
                     self.status = player_properties["Status"]
                 print('below is player1s status')
                 print(self.status)

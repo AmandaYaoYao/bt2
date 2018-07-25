@@ -110,7 +110,7 @@ class BluePlayer():
             if "Status" in changed:
                 self.pause()
                 self.status = (changed["Status"])
-                if self
+
     def updateDisplay(self):
         if self.player:
             if "Artist" in self.track:
