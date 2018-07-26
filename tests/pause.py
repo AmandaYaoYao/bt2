@@ -46,13 +46,13 @@ class BluePlayer():
 
     def setAddy(self, path):
         self.addy = path
+        self.getPlayer(self.addy)
 
     def start(self):
         """Start the BluePlayer by running the gobject Mainloop()"""
         self.mainloop = gobject.MainLoop()
         self.mainloop.run()
-        self.getPlayer(self.addy)
-
+        
     def end(self):
         """Stop the gobject Mainloop()"""
         if (self.mainloop):
