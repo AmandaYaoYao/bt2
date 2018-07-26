@@ -64,8 +64,6 @@ class BluePlayer():
     def getPlayer(self, path):
         """Get a media player from a dbus path, and the associated device"""
         self.player = self.bus.get_object("org.bluez", path)
-        print("Player gotten:")
-	    print (self.player)
         self.pause()
         device_path = self.player.Get("org.bluez.MediaPlayer1", "Device", dbus_interface="org.freedesktop.DBus.Properties")
         self.getDevice(device_path)
@@ -114,18 +112,19 @@ class BluePlayer():
        self.player.Pause(dbus_interface=PLAYER_IFACE)
 
 
-if __name__ == "__main__":
-    player = None
+#if __name__ == "__main__":
+player = None
+print('plaer=main')
 
-    try:
+try:
         player = BluePlayer()
         player.setAddy(sys.argv[1])
         player.start()
-    except KeyboardInterrupt as ex:
+except KeyboardInterrupt as ex:
         print("\nBluePlayer cancelled by user")
-    except Exception as ex:
+except Exception as ex:
         print("How embarrassing. The following error occurred {}".format(ex))
-    finally:
+finally:
         if player: player.end()
 
 
