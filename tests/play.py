@@ -43,7 +43,7 @@ class BluePlayer():
                 path_keyword="path")
 
         self.getPlayer(path)
-        self.updateDisplay()
+      
 
     def start(self):
         """Start the BluePlayer by running the gobject Mainloop()"""

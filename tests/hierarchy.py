@@ -62,7 +62,7 @@ class BluePlayer():
         #         path_keyword="path")
 
         self.findPlayer()
-        self.updateDisplay()
+  
 
     def start(self):
         """Start the BluePlayer by running the gobject Mainloop()"""
@@ -84,15 +84,15 @@ class BluePlayer():
                 #indented this which was unexpected
                 self.player_list += [path]
 
-            player_path = None
-            player_path2 = None
-            #The 0 length case seems handled 
-            if len(self.player_list) ==  1: 
-              player_path = lst[0]
-        # this will break with three devices immediately
-            if len(self.player_list) == 2:
-              player_path = lst[0]
-              player_path2 = lst[1]
+        player_path = None
+        player_path2 = None
+        #The 0 length case seems handled 
+        if len(self.player_list) ==  1: 
+          player_path = player_list[0]
+    # this will break with three devices immediately
+        if len(self.player_list) == 2:
+          player_path = player_list[0]
+          player_path2 = player_list[1]
 
         #Changed by getting rid of print(path2)
         #Now making a call to player2

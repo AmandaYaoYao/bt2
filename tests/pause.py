@@ -43,15 +43,14 @@ class BluePlayer():
                 signal_name="PropertiesChanged",
                 path_keyword="path")
 
-        self.getPlayer(path)
-
     def setAddy(self, path):
-        self.addy = add
+        self.addy = path
 
     def start(self):
         """Start the BluePlayer by running the gobject Mainloop()"""
         self.mainloop = gobject.MainLoop()
         self.mainloop.run()
+        self.getPlayer(path)
 
     def end(self):
         """Stop the gobject Mainloop()"""
@@ -60,7 +59,7 @@ class BluePlayer():
 
     def getPlayer(self, path):
         """Get a media player from a dbus path, and the associated device"""
-        self.player = self.bus.get_object("org.bluez", self.addy)
+        self.player = self.bus.get_object("org.bluez", path)
         self.pause()
         device_path = self.player.Get("org.bluez.MediaPlayer1", "Device", dbus_interface="org.freedesktop.DBus.Properties")
         self.getDevice(device_path)
