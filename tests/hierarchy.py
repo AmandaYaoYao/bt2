@@ -109,7 +109,8 @@ class BluePlayer():
             self.connected = True
             pause.run(player_path)
             time.sleep(10)
-            pause.end()
+            print("hey im boutta send a pause command!")
+	    pause.end()
 
     # obviously nonsensical at the moment.
     def flipPlayer(self):

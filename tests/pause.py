@@ -55,7 +55,6 @@ class BluePlayer():
         self.mainloop.run()
         
 
-
     def end(self):
         """Stop the gobject Mainloop()"""
         if (self.mainloop):
