@@ -1,4 +1,3 @@
-import pause
 
 #!/usr/bin/env python
 
@@ -12,7 +11,7 @@ Pause.run()
 Pause.end()
 
 """
-
+import pause
 import time
 import signal
 import dbus
@@ -31,6 +30,7 @@ ADAPTER_IFACE = SERVICE_NAME + ".Adapter1"
 DEVICE_IFACE = SERVICE_NAME + ".Device1"
 PLAYER_IFACE = SERVICE_NAME + '.MediaPlayer1'
 TRANSPORT_IFACE = SERVICE_NAME + '.MediaTransport1'
+
 
 class BluePlayer():
     bus = None
@@ -62,7 +62,6 @@ class BluePlayer():
         #         path_keyword="path")
 
         self.findPlayer()
-        self.updateDisplay()
 
     def start(self):
         """Start the BluePlayer by running the gobject Mainloop()"""
@@ -84,15 +83,15 @@ class BluePlayer():
                 #indented this which was unexpected
                 self.player_list += [path]
 
-            player_path = None
-            player_path2 = None
-            #The 0 length case seems handled 
-            if len(self.player_list) ==  1: 
-              player_path = lst[0]
+        player_path = None
+        player_path2 = None
+        #The 0 length case seems handled 
+        if len(self.player_list) ==  1: 
+           player_path = self.player_list[0]
         # this will break with three devices immediately
-            if len(self.player_list) == 2:
-              player_path = lst[0]
-              player_path2 = lst[1]
+        if len(self.player_list) == 2:
+           player_path = self.player_list[0]
+           player_path2 = self.player_list[1]
 
         #Changed by getting rid of print(path2)
         #Now making a call to player2
@@ -102,7 +101,7 @@ class BluePlayer():
            pause.end()
            # this guy makes the call to play
            cmds = ["sudo","python", "play.py"] 
-		   cmds.append(player_path2)
+           cmds.append(player_path2)
            popenAndCall(self.flipPlayer, cmds, shell=False, stdout=PIPE)
 
         if player_path:
@@ -116,7 +115,7 @@ class BluePlayer():
     	if(player_list[2]):
 	    	popenAndCall(self.flipPlayer, player_list[1],)
 	    	pause.run(player_list[2])
-	    else:
+        else:
 	    	popenAndCall(self.flipPlayer, player_list[1],)
 
 
@@ -152,6 +151,6 @@ if __name__ == "__main__":
     except KeyboardInterrupt as ex:
         print("\nBluePlayer cancelled by user")
     except Exception as ex:
-        print("How embarrassing. The following error occurred {}".format(ex))
+        print("How embarrassing hierarchy. The following error occurred {}".format(ex))
     finally:
         if player: player.end()
