@@ -109,7 +109,7 @@ if __name__ == "__main__":
     player = None
 
     try:
-        player = BluePlayer(path)
+        player = BluePlayer()
         player.start()
     except KeyboardInterrupt as ex:
         print("\nBluePlayer cancelled by user")

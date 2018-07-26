@@ -107,10 +107,13 @@ class BluePlayer():
 
         if player_path:
             self.connected = True
-            pause.run(player_path)
+            cmnd = ["sudo","python", "play.py"] 
+            cmnd.append(player_path)
+            subp = Popen(cmnd, shell=False, stdout=PIPE)
             time.sleep(10)
-            print("hey im boutta send a pause command!")
-	    pause.end()
+            subp.terminate()
+            print("should be over")
+	    
 
     # obviously nonsensical at the moment.
     def flipPlayer(self):

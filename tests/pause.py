@@ -10,6 +10,7 @@ import dbus
 import dbus.service
 import dbus.mainloop.glib
 import gobject
+import sys
 
 SERVICE_NAME = "org.bluez"
 AGENT_IFACE = SERVICE_NAME + '.Agent1'
@@ -112,14 +113,13 @@ class BluePlayer():
        print(self.player)
        self.player.Pause(dbus_interface=PLAYER_IFACE)
 
-player = None
 
-def run(address):
-    player = None    
+if __name__ == "__main__":
+    player = None
 
     try:
         player = BluePlayer()
-        player.setAddy(address)
+        player.setAddy(sys.argv[1])
         player.start()
     except KeyboardInterrupt as ex:
         print("\nBluePlayer cancelled by user")
@@ -128,7 +128,24 @@ def run(address):
     finally:
         if player: player.end()
 
-def end():
-    global player
-    player.end()
+
+# player = None
+
+# def run(address):
+#     player = None    
+
+#     try:
+#         player = BluePlayer()
+#         player.setAddy(address)
+#         player.start()
+#     except KeyboardInterrupt as ex:
+#         print("\nBluePlayer cancelled by user")
+#     except Exception as ex:
+#         print("How embarrassing. The following error occurred {}".format(ex))
+#     finally:
+#         if player: player.end()
+
+# def end():
+#     global player
+#     player.end()
 
