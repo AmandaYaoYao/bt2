@@ -2,6 +2,7 @@
 
 # Dependencies:
 # sudo apt-get install -y python-gobject
+#execution stops with .run unfortunately. 
 
 import time
 import signal
@@ -43,14 +44,17 @@ class BluePlayer():
                 signal_name="PropertiesChanged",
                 path_keyword="path")
 
+   # this could work to getplayer first
     def setAddy(self, path):
         self.addy = path
+        self.getPlayer(self.addy)
 
     def start(self):
         """Start the BluePlayer by running the gobject Mainloop()"""
         self.mainloop = gobject.MainLoop()
         self.mainloop.run()
-        self.getPlayer(path)
+        
+
 
     def end(self):
         """Stop the gobject Mainloop()"""
@@ -60,6 +64,8 @@ class BluePlayer():
     def getPlayer(self, path):
         """Get a media player from a dbus path, and the associated device"""
         self.player = self.bus.get_object("org.bluez", path)
+        print("Player gotten:")
+	    print (self.player)
         self.pause()
         device_path = self.player.Get("org.bluez.MediaPlayer1", "Device", dbus_interface="org.freedesktop.DBus.Properties")
         self.getDevice(device_path)
@@ -92,7 +98,7 @@ class BluePlayer():
             if "Status" in changed:
                 self.pause()
                 self.status = (changed["Status"])
-          
+
     def next(self):
         self.player.Next(dbus_interface=PLAYER_IFACE)
 
@@ -103,12 +109,14 @@ class BluePlayer():
         self.player.Play(dbus_interface=PLAYER_IFACE)
 
     def pause(self):
-        self.player.Pause(dbus_interface=PLAYER_IFACE)
+       print("her3e comes the player")
+       print(self.player)
+       self.player.Pause(dbus_interface=PLAYER_IFACE)
 
 player = None
 
 def run(address):
-    
+    player = None    
 
     try:
         player = BluePlayer()
@@ -122,4 +130,6 @@ def run(address):
         if player: player.end()
 
 def end():
+    global player
     player.end()
+

@@ -90,11 +90,8 @@ class BluePlayer():
                 player.end()
                 # self.track = changed["Track"]
                 # self.updateDisplay()
-            if "Status" in changed:
-                
+            if "Status" in changed:                
                 self.status = (changed["Status"])
-               
-
 
     def next(self):
         self.player.Next(dbus_interface=PLAYER_IFACE)

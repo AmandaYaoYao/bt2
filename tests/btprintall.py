@@ -1,6 +1,4 @@
 
-Code: Select all
-
 #!/usr/bin/env python
 
 # Dependencies:
