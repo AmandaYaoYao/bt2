@@ -112,19 +112,20 @@ class BluePlayer():
        self.player.Pause(dbus_interface=PLAYER_IFACE)
 
 
-#if __name__ == "__main__":
-player = None
-print('plaer=main')
+if __name__ == "__main__":	
+    player = None
+    print('plaer=main')
+    print(sys.argv[1])
 
-try:
+    try:
         player = BluePlayer()
         player.setAddy(sys.argv[1])
         player.start()
-except KeyboardInterrupt as ex:
+    except KeyboardInterrupt as ex:
         print("\nBluePlayer cancelled by user")
-except Exception as ex:
+    except Exception as ex:
         print("How embarrassing. The following error occurred {}".format(ex))
-finally:
+    finally:
         if player: player.end()
 
 

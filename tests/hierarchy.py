@@ -107,7 +107,7 @@ class BluePlayer():
 
         if player_path:
             self.connected = True
-            cmnd = ["sudo","python", "play.py"] 
+            cmnd = ["sudo","python", "pause.py"] 
             cmnd.append(player_path)
             subp = Popen(cmnd, shell=False, stdout=PIPE)
             time.sleep(10)
