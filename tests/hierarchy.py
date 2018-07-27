@@ -18,7 +18,7 @@ import dbus
 import dbus.service
 import dbus.mainloop.glib
 import gobject
-
+import os
 
  # to run play with async call back
 import threading
@@ -109,10 +109,13 @@ class BluePlayer():
             self.connected = True
             cmnd = ["sudo","python", "pause.py"] 
             cmnd.append(player_path)
-            subp = Popen(cmnd, shell=False, stdout=PIPE)
+            subp = Popen(cmnd, shell=False, stdout=PIPE, preexec_fn=os.setpgrp)
+            print subp
             time.sleep(10)
-            subp.terminate()
+            subp.kill()
+            os.killpg(subp.pid, signal.SIGINT)
             print("should be over")
+            print(subp)
 	    
 
     # obviously nonsensical at the moment.
