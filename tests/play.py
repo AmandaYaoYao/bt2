@@ -95,7 +95,7 @@ class BluePlayer():
                         if sys.argv[2] != "onlyplayer":
                                self.pause()
 			       player.end()
-                               sys.exit()
+                               
                         self.track = changed["Track"]
                     # self.updateDisplay()
               

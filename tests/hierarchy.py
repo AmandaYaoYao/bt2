@@ -123,7 +123,7 @@ class BluePlayer():
 
     # obviously nonsensical at the moment.
     def flipPlayer(self):
-        
+        print("flipplayer called")   
 	# end this guy
         if self.subp:
 	   self.subp.kill()
@@ -138,7 +138,8 @@ class BluePlayer():
            player_path = self.player_list[0]
            player_path2 = self.player_list[1]
            self.player_list = [player_path2, player_path]
-
+        # migt have been missing runplays call idiot
+        self.runPlays()
 
     def popenAndCall(self, onExit, *popenArgs, **popenKWArgs):
 	    """
@@ -149,6 +150,7 @@ class BluePlayer():
 	    callable to execute as the first argument. onExit is a callable object, and
 	    *popenArgs and **popenKWArgs are simply passed up to subprocess.Popen.
 	    """
+	    print("popen and called called")
 	    def runInThread(onExit, popenArgs, popenKWArgs):
 	        proc = Popen(*popenArgs, **popenKWArgs)
 		proc.wait()
