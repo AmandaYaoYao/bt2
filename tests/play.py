@@ -29,7 +29,7 @@ class BluePlayer():
     status = None
     track = []
 
-    def __init__(self, path):
+    def __init__(self):
         """Specify a signal handler, and find any connected media players"""
         gobject.threads_init()
         dbus.mainloop.glib.DBusGMainLoop(set_as_default=True)
@@ -43,7 +43,8 @@ class BluePlayer():
                 signal_name="PropertiesChanged",
                 path_keyword="path")
 
-        self.getPlayer(path)
+    def setAddy(self, path):    
+ 	   self.getPlayer(path)
       
 
     def start(self):
@@ -84,16 +85,16 @@ class BluePlayer():
                 #     self.findPlayer()
         elif iface == "MediaPlayer1":
             if "Track" in changed:
+                 print("changed")
                 # need to one day change this to alan jackson's chatahoochee
                  if changed["Track"] == "Chatahoochee":
                     player.end()
-
+                 print(sys.argv)
                 #could be this simple.               
-                if len(sys.argv <= 3):
-                        # print(sys.argv)
-                        self.pause()
+                 if (len(sys.argv) <= 3):                        
                         if sys.argv[2] != "onlyplayer":
-                               player.end()
+                               self.pause()
+			       player.end()
                                sys.exit()
                         self.track = changed["Track"]
                     # self.updateDisplay()
@@ -127,6 +128,7 @@ if __name__ == "__main__":
 
     try:
         player = BluePlayer()
+	player.setAddy(sys.argv[1])
         player.start()
     except KeyboardInterrupt as ex:
         print("\nBluePlayer cancelled by user")

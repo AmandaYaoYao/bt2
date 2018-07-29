@@ -112,7 +112,8 @@ class BluePlayer():
           
 
         if player_path:
-           self.connected = True
+           print(player_path)
+	   self.connected = True
 	       # this guy makes the call to play
            cmds = ["sudo","python", "play.py"] 
            cmds.append(player_path)
@@ -150,7 +151,7 @@ class BluePlayer():
 	    """
 	    def runInThread(onExit, popenArgs, popenKWArgs):
 	        proc = Popen(*popenArgs, **popenKWArgs)
-	        proc.wait()
+		proc.wait()
 	        onExit()
 	        return
 		
