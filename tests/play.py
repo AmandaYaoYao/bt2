@@ -90,8 +90,9 @@ class BluePlayer():
                 """
                     EXPECT TO GET OUT OF INDEX ERROR HERE LATER
                 """
-                if len(sys.argv >= 3):
+                if len(sys.argv <= 3):
                     if sys.argv[2] != "onlyplayer":
+
                            player.end()
                            sys.exit()
                     self.track = changed["Track"]
