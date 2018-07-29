@@ -9,6 +9,7 @@ import dbus
 import dbus.service
 import dbus.mainloop.glib
 import gobject
+import sys
 
 SERVICE_NAME = "org.bluez"
 AGENT_IFACE = SERVICE_NAME + '.Agent1'
@@ -83,15 +84,29 @@ class BluePlayer():
                 #     self.findPlayer()
         elif iface == "MediaPlayer1":
             if "Track" in changed:
-                self.pause()
-                #@TODO ome type of feedback here needed to get em to go 
-                # 
-                # end player if and when we need to 
-                player.end()
-                # self.track = changed["Track"]
+                # need to one day change this to alan jackson's chatahoochee
+                 if changed["Track"] == "Chatahoochee":
+                    player.end()
+                """
+                    EXPECT TO GET OUT OF INDEX ERROR HERE LATER
+                """
+                if len(sys.argv >= 3):
+                    if sys.argv[2] != "onlyplayer":
+                           player.end()
+                           sys.exit()
+                    self.track = changed["Track"]
                 # self.updateDisplay()
+           """ lets worry about this after the top one.
             if "Status" in changed:                
                 self.status = (changed["Status"])
+                # when this is changed, if not playing you've gotta skip em
+                time.sleep(10)
+                if self.status != "playing":
+                    # IF THIS GUY ISNT THE ONLY PLAYER
+                    if sys.argv[2] != "onlyplayer":
+                           player.end()
+                           sys.exit()
+           """
 
     def next(self):
         self.player.Next(dbus_interface=PLAYER_IFACE)

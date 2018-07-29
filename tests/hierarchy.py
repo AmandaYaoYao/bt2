@@ -8,7 +8,9 @@
 """
 CURRENT TESTS:
 Pause.run() XXXXXX
-Pause.end() 
+Pause.end() doesn't work
+Subprocesses: work
+Ending subprocesses: work somewhat. 
 
 """
 import pause
@@ -44,6 +46,7 @@ class BluePlayer():
     track = []
     player_list = []
     connected2 = None
+    subp = None
 
     def __init__(self):
         """Specify a signal handler, and find any connected media players"""
@@ -83,6 +86,10 @@ class BluePlayer():
                 #indented this which was unexpected
                 self.player_list += [path]
 
+        runPlays
+
+
+    def runPlays(self):
         player_path = None
         player_path2 = None
         #The 0 length case seems handled 
@@ -97,34 +104,37 @@ class BluePlayer():
         #Changed by getting rid of print(path2)
         #Now making a call to player2
         if player_path2:
-           self.connected2 = True
-           # make sure she woeks
-           pause.end()
-           # this guy makes the call to play
-           cmds = ["sudo","python", "play.py"] 
-           cmds.append(player_path2)
-           popenAndCall(self.flipPlayer, cmds, shell=False, stdout=PIPE)
-
-        if player_path:
-            self.connected = True
+            self.connected2 = True
             cmnd = ["sudo","python", "pause.py"] 
             cmnd.append(player_path)
-            subp = Popen(cmnd, shell=False, stdout=PIPE, preexec_fn=os.setpgrp)
-            print subp
-            time.sleep(10)
-            subp.kill()
-            os.killpg(subp.pid, signal.SIGINT)
-            print("should be over")
-            print(subp)
-	    
+            self.subp = Popen(cmnd, shell=False, stdout=PIPE, preexec_fn=os.setpgrp)
+            
+          
+
+        if player_path:
+           self.connected = True
+	       # this guy makes the call to play
+           cmds = ["sudo","python", "play.py"] 
+           cmds.append(player_path2)
+           # appending indicator that this is the only player so that we never exit if not
+           cmds.append("onlyplayer")
+           popenAndCall(self.flipPlayer, cmds, shell=False, stdout=PIPE)
 
     # obviously nonsensical at the moment.
     def flipPlayer(self):
-    	if(player_list[2]):
-	    	popenAndCall(self.flipPlayer, player_list[1],)
-	    	pause.run(player_list[2])
-        else:
-	    	popenAndCall(self.flipPlayer, player_list[1],)
+        # end this guy
+        self.subp.kill()
+        os.killpg(self.subp.pid, signal.SIGINT)
+
+        # let's worry about this later too.
+    	# if len(self.player_list) ==  1: 
+        # only play current
+        # player_path = self.player_list[0]
+        # this will break with three devices immediately
+        if len(self.player_list) == 2:
+           player_path = self.player_list[0]
+           player_path2 = self.player_list[1]
+           self.player_list = [player_path2, player_path]
 
 
 	def popenAndCall(onExit, *popenArgs, **popenKWArgs):
