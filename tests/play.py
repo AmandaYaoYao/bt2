@@ -87,26 +87,25 @@ class BluePlayer():
                 # need to one day change this to alan jackson's chatahoochee
                  if changed["Track"] == "Chatahoochee":
                     player.end()
-                """
-                    EXPECT TO GET OUT OF INDEX ERROR HERE LATER
-                """
-                if len(sys.argv >= 3):
+               
+            if len(sys.argv <= 3):
                     if sys.argv[2] != "onlyplayer":
                            player.end()
                            sys.exit()
                     self.track = changed["Track"]
                 # self.updateDisplay()
-           """ lets worry about this after the top one.
-            if "Status" in changed:                
-                self.status = (changed["Status"])
+          
+            #lets worry about this after the top one.
+           # if "Status" in changed:                
+               # self.status = (changed["Status"])
                 # when this is changed, if not playing you've gotta skip em
-                time.sleep(10)
-                if self.status != "playing":
+              #  time.sleep(10)
+             #   if self.status != "playing":
                     # IF THIS GUY ISNT THE ONLY PLAYER
-                    if sys.argv[2] != "onlyplayer":
-                           player.end()
-                           sys.exit()
-           """
+            #        if sys.argv[2] != "onlyplayer":
+           #                player.end()
+          #                 sys.exit()
+          
 
     def next(self):
         self.player.Next(dbus_interface=PLAYER_IFACE)

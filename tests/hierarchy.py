@@ -86,7 +86,7 @@ class BluePlayer():
                 #indented this which was unexpected
                 self.player_list += [path]
 
-        runPlays
+        self.runPlays()
 
 
     def runPlays(self):
@@ -106,7 +106,7 @@ class BluePlayer():
         if player_path2:
             self.connected2 = True
             cmnd = ["sudo","python", "pause.py"] 
-            cmnd.append(player_path)
+            cmnd.append(player_path2)
             self.subp = Popen(cmnd, shell=False, stdout=PIPE, preexec_fn=os.setpgrp)
             
           
@@ -115,16 +115,18 @@ class BluePlayer():
            self.connected = True
 	       # this guy makes the call to play
            cmds = ["sudo","python", "play.py"] 
-           cmds.append(player_path2)
+           cmds.append(player_path)
            # appending indicator that this is the only player so that we never exit if not
-           cmds.append("onlyplayer")
-           popenAndCall(self.flipPlayer, cmds, shell=False, stdout=PIPE)
+           cmds.append("notonlyplayer")
+           self.popenAndCall(self.flipPlayer, cmds, shell=False, stdout=PIPE)
 
     # obviously nonsensical at the moment.
     def flipPlayer(self):
-        # end this guy
-        self.subp.kill()
-        os.killpg(self.subp.pid, signal.SIGINT)
+        
+	# end this guy
+        if self.subp:
+	   self.subp.kill()
+           os.killpg(self.subp.pid, signal.SIGINT)
 
         # let's worry about this later too.
     	# if len(self.player_list) ==  1: 
@@ -137,7 +139,7 @@ class BluePlayer():
            self.player_list = [player_path2, player_path]
 
 
-	def popenAndCall(onExit, *popenArgs, **popenKWArgs):
+    def popenAndCall(self, onExit, *popenArgs, **popenKWArgs):
 	    """
 	    Runs a subprocess.Popen, and then calls the function onExit when the
 	    subprocess completes.
