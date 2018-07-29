@@ -6,7 +6,7 @@
 # if name== main works for our subprocesses so no need to change
 # need to drop shit when ppl disconnect.
 """
-CURRENT TESTS:
+CrURRENT TESTS:
 Pause.run() XXXXXX
 Pause.end() doesn't work
 Subprocesses: work
