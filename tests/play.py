@@ -45,13 +45,15 @@ class BluePlayer():
 
     def setAddy(self, path):    
  	   self.getPlayer(path)
-      
+    
+    def play(self):
+           self.player.Play(dbus_interface=PLAYER_IFACE)
 
     def start(self):
         """Start the BluePlayer by running the gobject Mainloop()"""
         self.mainloop = gobject.MainLoop()
         self.mainloop.run()
-
+	self.play()
     def end(self):
         """Stop the gobject Mainloop()"""
         if (self.mainloop):
@@ -62,7 +64,7 @@ class BluePlayer():
         self.player = self.bus.get_object("org.bluez", path)
         device_path = self.player.Get("org.bluez.MediaPlayer1", "Device", dbus_interface="org.freedesktop.DBus.Properties")
         self.getDevice(device_path)
-
+	self.play()
     def getDevice(self, path):
         """Get a device from a dbus path"""
         self.device = self.bus.get_object("org.bluez", path)
@@ -117,9 +119,6 @@ class BluePlayer():
     def previous(self):
         self.player.Previous(dbus_interface=PLAYER_IFACE)
 
-    def play(self):
-        self.player.Play(dbus_interface=PLAYER_IFACE)
-
     def pause(self):
         self.player.Pause(dbus_interface=PLAYER_IFACE)
 
@@ -130,9 +129,20 @@ if __name__ == "__main__":
         player = BluePlayer()
 	player.setAddy(sys.argv[1])
         player.start()
+	player.play()
     except KeyboardInterrupt as ex:
         print("\nBluePlayer cancelled by user")
     except Exception as ex:
         print("How embarrassing. The following error occurred {}".format(ex))
     finally:
         if player: player.end()
+    try:
+	sys.stdout.flush()
+	sys.stdout.close()
+    except:
+        pass
+    try:
+	sys.stderr.flush()
+	sys.stderr.close()
+    except:
+        pass

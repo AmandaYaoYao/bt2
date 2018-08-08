@@ -127,7 +127,7 @@ class BluePlayer():
 	# end this guy
         if self.subp:
 	   self.subp.kill()
-           os.killpg(self.subp.pid, signal.SIGINT)
+           os.killpg(self.subp.pid, signal.SIGKILL)
 
         # let's worry about this later too.
     	# if len(self.player_list) ==  1: 

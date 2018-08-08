@@ -91,8 +91,7 @@ class BluePlayer():
         elif iface == "MediaPlayer1":
             if "Track" in changed:
                 self.pause()
-                self.track = changed["Track"]
-                self.updateDisplay()
+                self.track = (changed["Track"])
             if "Status" in changed:
                 self.pause()
                 self.status = (changed["Status"])
