@@ -76,7 +76,7 @@ class BluePlayer():
     def playerHandler(self, interface, changed, invalidated, path):
         """Handle relevant property change signals"""
         iface = interface[interface.rfind(".") + 1:]
-#        print("Interface: {}; changed: {}".format(iface, changed))
+        # print("Interface: {}; changed: {}".format(iface, changed))
 
         if iface == "Device1":
             if "Connected" in changed:
@@ -91,8 +91,7 @@ class BluePlayer():
         elif iface == "MediaPlayer1":
             if "Track" in changed:
                 self.pause()
-                self.track = changed["Track"]
-                self.updateDisplay()
+                self.track = (changed["Track"])
             if "Status" in changed:
                 self.pause()
                 self.status = (changed["Status"])
@@ -114,7 +113,6 @@ class BluePlayer():
 
 if __name__ == "__main__":	
     player = None
-    print('plaer=main')
     print(sys.argv[1])
 
     try:

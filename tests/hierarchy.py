@@ -6,12 +6,7 @@
 # if name== main works for our subprocesses so no need to change
 # need to drop shit when ppl disconnect.
 """
-CURRENT TESTS:
-Pause.run() XXXXXX
-Pause.end() doesn't work
-Subprocesses: work
-Ending subprocesses: work somewhat. 
-
+Currently: If can get rid of sudo bluealsa player at right time, then neither will hear the wrong song
 """
 import pause
 import time
@@ -47,6 +42,7 @@ class BluePlayer():
     player_list = []
     connected2 = None
     subp = None
+    sublis = None
 
     def __init__(self):
         """Specify a signal handler, and find any connected media players"""
@@ -119,16 +115,41 @@ class BluePlayer():
            cmds.append(player_path)
            # appending indicator that this is the only player so that we never exit if not
            cmds.append("notonlyplayer")
+
+           # need to open our listener
+           lis = ["sudo", "bluealsa-aplay"]
+           #makes everything split on these underscores
+           path = player_path.split('_')
+           #gets rid of everything before dev name, fixes end, then turns _ to :
+           path.pop(0)
+           path[5] = path[5][:2]
+           path = ':'.join(path)
+           #add cleaned devname to our thing.
+           lis.append(path)
+           #does sudobluealsa thing
+           self.sublis = Popen(lis, shell=False, stdout=PIPE, preexec_fn=os.setpgrp)
+           #opens and calls stuff
            self.popenAndCall(self.flipPlayer, cmds, shell=False, stdout=PIPE)
 
     # obviously nonsensical at the moment.
     def flipPlayer(self):
-        
+        print("flipplayer called")   
 	# end this guy
         if self.subp:
+            print("hey you institiuted this print to show you that killing is happening on pause,py. ")
 	   self.subp.kill()
-           os.killpg(self.subp.pid, signal.SIGINT)
+           os.killpg(self.subp.pid, signal.SIGKILL)
+           #Reset subp at end be careful of this tho.
+           self.subp = None
 
+        if self.sublis
+            print("hey you institiuted me to show you that we killed listener ")
+       self.sublis.kill()
+           os.killpg(self.sublis.pid, signal.SIGKILL)
+           #Reset subp at end be careful of this tho.
+           self.sublis = None
+
+        print("if you didnt see a print about killiing uhoh")
         # let's worry about this later too.
     	# if len(self.player_list) ==  1: 
         # only play current
@@ -138,7 +159,8 @@ class BluePlayer():
            player_path = self.player_list[0]
            player_path2 = self.player_list[1]
            self.player_list = [player_path2, player_path]
-
+        # migt have been missing runplays call idiot
+        self.runPlays()
 
     def popenAndCall(self, onExit, *popenArgs, **popenKWArgs):
 	    """
@@ -149,6 +171,7 @@ class BluePlayer():
 	    callable to execute as the first argument. onExit is a callable object, and
 	    *popenArgs and **popenKWArgs are simply passed up to subprocess.Popen.
 	    """
+	    print("popen and called called")
 	    def runInThread(onExit, popenArgs, popenKWArgs):
 	        proc = Popen(*popenArgs, **popenKWArgs)
 		proc.wait()
