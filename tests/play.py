@@ -51,6 +51,7 @@ class BluePlayer():
         """Start the BluePlayer by running the gobject Mainloop()"""
         self.mainloop = gobject.MainLoop()
         self.mainloop.run()
+        # ??self.play()
 
     def end(self):
         """Stop the gobject Mainloop()"""
@@ -130,6 +131,10 @@ if __name__ == "__main__":
         player = BluePlayer()
 	player.setAddy(sys.argv[1])
         player.start()
+        # 
+        # 
+        # 
+        player.play()
     except KeyboardInterrupt as ex:
         print("\nBluePlayer cancelled by user")
     except Exception as ex:
